@@ -29,7 +29,7 @@
 
 # 📖 Redux Blog <a name="about-project"></a>
 
-**Redux Blog:** This is a simple Crud application built using React, Redux and Ant-design. The application allows users to create, read, update, and delete tasks from the list. This project is a great starting point for those who want to learn web development or want to build their own task management application.
+**Redux Blog:** This repository contains a concise and comprehensive Crud application developed using React, Redux, and Ant-design. The application facilitates the creation, reading, updating, and deletion of tasks from a list. It serves as an excellent resource for individuals interested in acquiring knowledge in web development or aiming to construct their personalized task management application.
 
 ## 🛠 Built With <a name="built-with"></a>
 
@@ -53,7 +53,7 @@
 
 ## 🚀 Live Demo <a name="live-demo"></a>
 
-<!-- - [Live Project Demo] -->
+- [Live Project Demo]()
 
 <p align="right">(<a href="#readme-top">back to top</a>)</p>
 
