@@ -53,7 +53,7 @@
 
 ## 🚀 Live Demo <a name="live-demo"></a>
 
-- [Live Project Demo]()
+- [Live Project Demo](https://redux-blog13.netlify.app/)
 
 <p align="right">(<a href="#readme-top">back to top</a>)</p>
 
