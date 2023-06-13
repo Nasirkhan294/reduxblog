@@ -16,7 +16,7 @@ export const deletePost = createAsyncThunk('post/deletePost', async ({ id }) => 
 });
 
 export const createPost = createAsyncThunk('post/createPost', async ({ values }) => {
-	return fetch(`https://jsonplaceholder.typicode.com/posts/`, {
+	return fetch('https://jsonplaceholder.typicode.com/posts/', {
 		method: 'POST',
 		headers: {
 			Accept: 'application/json',
@@ -31,12 +31,36 @@ export const createPost = createAsyncThunk('post/createPost', async ({ values })
 	);
 });
 
+export const updatePost = createAsyncThunk('post/updatePost', async ({ id, title, body }) => {
+	return fetch(`https://jsonplaceholder.typicode.com/posts/${id}`, {
+		method: 'PUT',
+		headers: {
+			Accept: 'application/json',
+			'content-Type': 'application/json'
+		},
+		body: JSON.stringify({
+			title,
+			body,
+		})
+	}).then((res) =>
+		res.json()
+	);
+});
+
 const postSlice = createSlice({
 	name: 'post',
 	initialState: {
 		post: [],
 		loading: false,
 		error: null,
+		body: '',
+		edit: false,
+	},
+	reducers: {
+		setEdit: (state, action) => {
+			state.edit = action.payload.edit;
+			state.body = action.payload.body
+		}
 	},
 	extraReducers: {
 		[getPost.pending]: (state, action) => {
@@ -66,14 +90,27 @@ const postSlice = createSlice({
 		},
 		[createPost.fulfilled]: (state, action) => {
 			state.loading = false;
-			state.post = action.payload;
+			state.post = [action.payload];
 		},
 		[createPost.rejected]: (state, action) => {
+			state.loading = false;
+			state.error = action.payload;
+		},
+		[updatePost.pending]: (state, action) => {
+			state.loading = true;
+		},
+		[updatePost.fulfilled]: (state, action) => {
+			state.loading = false;
+			state.post = [action.payload];
+		},
+		[updatePost.rejected]: (state, action) => {
 			state.loading = false;
 			state.error = action.payload;
 		}
 
 	}
 })
+
+export const {setEdit} = postSlice.actions;
 
 export default postSlice.reducer;

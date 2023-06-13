@@ -2,14 +2,19 @@ import { useEffect, useState } from "react";
 import { Button, Card, Input, Space } from "antd";
 import { useNavigate } from "react-router-dom";
 import { useDispatch, useSelector } from "react-redux";
-import { getPost, deletePost } from '../redux/features/postSlice';
+import { getPost, deletePost, setEdit, updatePost } from '../redux/features/postSlice';
 import LoadingCard from './LoadingCard';
 
 const Home = () => {
 	const [id, setId] = useState();
+	const [bodyText, setBodyText] = useState('');
 	const dispatch = useDispatch();
-	const { loading, post } = useSelector((state) => ({ ...state.app }));
-	console.log("post", post);
+	const { loading, post, edit, body } = useSelector((state) => ({ ...state.app }));
+	useEffect(() => {
+		if (body) {
+			setBodyText(body);
+		}
+	}, [body]);
 	const fetchUserPost = () => {
 		if (!id) {
 			window.alert("Please provide an ID");
@@ -46,21 +51,50 @@ const Home = () => {
 						<div className="site-card-border-less-wrapper" style={{ textAlign: 'center' }}>
 							<Card type='inner' title={post[0].title}>
 								<p>User Id: {post[0].id}</p>
-								<span>{post[0].body}</span>
+								{edit ?
+									(<>
+										<Input.TextArea
+											rows={4}
+											value={bodyText}
+											onChange={(e) => setBodyText(e.target.value)}
+										/>
+										<Space style={{ marginTop: 10, float: 'right' }}>
+											<Button type='primary'
+												onClick={() =>
+													dispatch(updatePost({
+														id: post[0].id,
+														title: post[0].title,
+														body: bodyText
+													}),
+														dispatch(setEdit({ edit: false, body: '' }))
+													)}>
+												Save
+											</Button>
+											<Button onClick={() =>
+												dispatch(setEdit({ edit: false, body: '' }))}
+											>
+												Cancel
+											</Button>
+										</Space>
+									</>) :
+									(<span>{post[0].body}</span>)}
 							</Card>
-							<Space size='middle' style={{ marginTop: 35, marginLeft: 5, float: 'right' }}>
-								<Button style={{ cursor: 'pointer' }} type="primary" danger onClick={() => dispatch(deletePost({id: post[0].id}))}>
-									Delete
-								</Button>
-								<Button style={{ cursor: 'pointer' }} type="primary">
-									Edit
-								</Button>
-							</Space>
+							{!edit && (
+								<Space size='middle' style={{ marginTop: 35, marginLeft: 5, float: 'right' }}>
+									<Button style={{ cursor: 'pointer' }} type="primary" danger onClick={() => dispatch(deletePost({ id: post[0].id }))}>
+										Delete
+									</Button>
+									<Button style={{ cursor: 'pointer' }} type="primary" onClick={() => dispatch(setEdit({ edit: true, body: post[0].body }))}>
+										Edit
+									</Button>
+								</Space>
+							)}
 						</div>
 					)}
 				</>
-			)}
-		</div>
+			)
+			}
+		</div >
 	)
 }
 

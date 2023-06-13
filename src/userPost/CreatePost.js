@@ -65,7 +65,7 @@ const CreatePost = () => {
       </form>
       <br />
       <br />
-      {showPost && <div>{showPostBlog()}</div>}
+      {showPost && <div style={{marginTop: '30px'}}>{showPostBlog()}</div>}
     </div>
   )
 }
